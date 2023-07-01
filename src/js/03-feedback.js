@@ -12,18 +12,18 @@ const msgObj = {
 form.addEventListener("input", throttle(handlerFormInput, 500))
 form.addEventListener("submit", handlerFormSubmit)
 
-isContinue(msgObj)
-
-function isContinue({email,message}) {
-    if (!localStorage.length) {
+isContinue()
+console.log(msgObj);
+function isContinue() {
+    const storage = JSON.parse(localStorage.getItem(KEY))
+    if (!storage) {
         return
-    }
-    const storage = JSON.parse(localStorage.getItem(KEY)) 
-    email = storage.email
-    message = storage.message
+    } 
+    msgObj.email = storage.email
+    msgObj.message = storage.message
 
-    emailForm.value = email
-    messageForm.value = message
+    emailForm.value = msgObj.email
+    messageForm.value = msgObj.message
 }
 
 function handlerFormInput(eve) {
@@ -40,5 +40,7 @@ function handlerFormSubmit(eve) {
     eve.preventDefault()
     console.log(msgObj);
     eve.currentTarget.reset()
+    msgObj.email = ''
+    msgObj.message = ''
     localStorage.removeItem(KEY)
 }
